@@ -6,28 +6,23 @@ on:
       - main
 
 jobs:
-  pipeline:
+  build-test-package:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      # BUILD
-      - name: Build
-        run: |
-          echo "Build step"
-          mkdir build
-          echo "app built" > build/app.txt
+      # Aller dans le bon dossier
+      - name: Install dependencies
+        working-directory: app
+        run: npm ci
 
       # TEST
-      - name: Test
-        run: |
-          echo "Running tests"
-          test -f build/app.txt
+      - name: Run tests
+        working-directory: app
+        run: npm test
 
       # PACKAGE
-      - name: Package
-        run: |
-          echo "Packaging app"
-          tar -czf app.tar.gz build/
+      - name: Package application
+        run: tar -czf app.tar.gz app/
