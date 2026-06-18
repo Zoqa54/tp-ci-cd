@@ -1,0 +1,33 @@
+name: CI-CD Pipeline
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  pipeline:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # BUILD
+      - name: Build
+        run: |
+          echo "Build step"
+          mkdir build
+          echo "app built" > build/app.txt
+
+      # TEST
+      - name: Test
+        run: |
+          echo "Running tests"
+          test -f build/app.txt
+
+      # PACKAGE
+      - name: Package
+        run: |
+          echo "Packaging app"
+          tar -czf app.tar.gz build/
